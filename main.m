@@ -38,7 +38,8 @@ Nd = 97;
 
 % Each control point attracts one particular point of the regression curve.
 % Specifically, control point k (in 1:N) attracts curve point s(k).
-% The vector s usually satsifies: s(1) = 1, s(end) = N and s(k+1) > s(k).
+% The vector s of length N usually satsifies:
+% s(1) = 1, s(end) = Nd and s(k+1) > s(k).
 s = round(linspace(1, Nd, N));
 
 % Time interval between two discretization points of the regression curve.
@@ -117,21 +118,23 @@ time = problem.delta_tau*( 0 : (problem.Nd-1) );
 
 figure(4);
 
-subpot(1, 2, 1);
+subplot(1, 2, 1);
 plot(time, speed0, time, speed1);
 title('Speed of initial curve and optimized curve');
 xlabel('Time');
 ylabel('Speed');
-legend('Initial curve', 'Optimized curve');
+legend('Initial curve', 'Optimized curve', 'Location', 'SouthEast');
 pbaspect([1.6, 1, 1]);
 
-subpot(1, 2, 2);
+subplot(1, 2, 2);
 plot(time, acc0, time, acc1);
 title('Acceleration of initial curve and optimized curve');
 xlabel('Time');
 ylabel('Acceleration');
-legend('Initial curve', 'Optimized curve');
+legend('Initial curve', 'Optimized curve', 'Location', 'NorthWest');
 pbaspect([1.6, 1, 1]);
+
+ylim([0, 20]);
 
 %% Refine a regression curve
 
@@ -139,13 +142,18 @@ pbaspect([1.6, 1, 1]);
 % poorly conditioned, and as a result take a long time to solve. One way to
 % alleviate this is to proceed in stages: compute a regression curve with
 % small Nd, then refine that curve through piecewise geodesic interpolation
-% and reoptimize. This procedure can be repeated of course.
+% and reoptimize. This procedure can be iterated.
 
-[X1r, problem_refined] = refine(X1, problem);
+compute_refinement = false;
+if compute_refinement
 
-X2 = digress(problem_refined, X1r);
+    [X1r, problem_refined] = refine(X1, problem);
 
-%% Display the whole regression curves movies
+    X2 = digress(problem_refined, X1r);
+
+end
+
+%% Display the whole regression curves as movies
 
 plot_movies = false;
 if plot_movies
@@ -156,6 +164,10 @@ if plot_movies
     plotSO3curve(problem, X1);
     pause;
     
-    plotSO3curve(problem_refined, X2);
+    % The refined curve appears slower because the movie is not
+    % synchronized with problem.delta_tau.
+    if compute_refinement
+        plotSO3curve(problem_refined, X2);
+    end
     
 end
