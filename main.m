@@ -10,6 +10,10 @@
 %
 % Nicolas Boumal, Oct. 2017
 
+clear all;
+close all;
+clc;
+
 %% Define a regression problem by defining N control points on SO(n)
 
 % Example 1: explicit construction
@@ -107,6 +111,9 @@ semilogy([info.time], [info.gradnorm], 'k.-');
 title('Gradient norm');
 xlabel('Computation time [s]');
 pbaspect([1.6, 1, 1]);
+
+% Can also display information about Hessian at X1:
+% plot_hessian_condition_number(optim_problem, X1);
 
 %% Plot speed and acceleration of X0 and X1
 
