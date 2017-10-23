@@ -147,7 +147,7 @@ ylim([0, 20]);
 compute_refinement = false;
 if compute_refinement
 
-    [X1r, problem_refined] = refine(X1, problem);
+    [problem_refined, X1r] = refine(problem, X1);
 
     X2 = digress(problem_refined, X1r);
 
