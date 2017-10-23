@@ -6,6 +6,8 @@
 %
 % SO(n) is the set of orthogonal matrices of size n x n and determinant +1.
 %
+% This code requires Manopt, freely available at http://www.manopt.org.
+%
 % Nicolas Boumal, Oct. 2017
 
 %% Define a regression problem by defining N control points on SO(n)
@@ -103,6 +105,32 @@ figure(3);
 semilogy([info.time], [info.gradnorm], 'k.-');
 title('Gradient norm');
 xlabel('Computation time [s]');
+pbaspect([1.6, 1, 1]);
+
+%% Plot speed and acceleration of X0 and X1
+
+[speed0, acc0] = compute_profiles(problem, X0);
+[speed1, acc1] = compute_profiles(problem, X1);
+
+% Passage time of each point on the discrete curves.
+time = problem.delta_tau*( 0 : (problem.Nd-1) );
+
+figure(4);
+
+subpot(1, 2, 1);
+plot(time, speed0, time, speed1);
+title('Speed of initial curve and optimized curve');
+xlabel('Time');
+ylabel('Speed');
+legend('Initial curve', 'Optimized curve');
+pbaspect([1.6, 1, 1]);
+
+subpot(1, 2, 2);
+plot(time, acc0, time, acc1);
+title('Acceleration of initial curve and optimized curve');
+xlabel('Time');
+ylabel('Acceleration');
+legend('Initial curve', 'Optimized curve');
 pbaspect([1.6, 1, 1]);
 
 %% Refine a regression curve
