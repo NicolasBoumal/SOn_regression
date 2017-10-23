@@ -10,7 +10,7 @@
 %
 % Nicolas Boumal, Oct. 2017
 
-clear all;
+clear;
 close all;
 clc;
 
@@ -79,6 +79,7 @@ problem.mu = mu;
 % Compute an initial guess for the curve. If this step is omitted, digress
 % (below) will compute one itself. X0 is a 3D matrix of size n x n x Nd,
 % such that each slice X0(:, :, k) is a rotation matrix.
+%
 X0 = initguess(problem);
 
 % Run the optimization procedure to compute X1, the discrete regression
@@ -87,6 +88,7 @@ X0 = initguess(problem);
 % returned by the optimization algorithm. The third output, optim_problem,
 % is the Manopt optimization problem structure used to produce X1. It can
 % be used to run another algorithm, e.g., for research purposes.
+%
 [X1, info, optim_problem] = digress(problem, X0);
 
 %% Compare Initial guess and optimized curve
