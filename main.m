@@ -158,16 +158,17 @@ end
 plot_movies = false;
 if plot_movies
     
-    plotSO3curve(problem, X0);
+    plotSO3curve(X0, problem.delta_tau);
     pause;
     
-    plotSO3curve(problem, X1);
+    plotSO3curve(X1, problem.delta_tau);
     pause;
     
-    % The refined curve appears slower because the movie is not
-    % synchronized with problem.delta_tau.
+    % The refined curve appears slower because the movie must produce more
+    % frames, but the frames can be synchronized when outputing a video
+    % file.
     if compute_refinement
-        plotSO3curve(problem_refined, X2);
+        plotSO3curve(X2, problem_refined.delta_tau);
     end
     
 end
